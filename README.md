@@ -36,20 +36,13 @@ pip install django
 
 ---
 
-## 🚀 Part 1 — Coming Soon
+## 🚀 Part 2 — Coming Soon
 
-Part 1 will cover the very basics:
-
-- What Django is and how it works
-- Understanding the MVC/MVT pattern
-- Setting up your Python environment
-- Installing Django and verifying your installation
-
-> ⏳ **Part 1 is currently being prepared. Please check back soon!**
+> ⏳ **Part 2 is currently being prepared. Please check back soon!**
 
 ---
 
-## 🛠️ Part 2 — Project Setup (Windows)
+## 🛠️ Part 1 — Project Setup (Windows)
 
 ### Step 1 — Create Your Project Folder
 
@@ -181,12 +174,66 @@ myblog_python/
 
 ---
 
+### Step 7 — Configure `urls.py` (Main Project Folder)
+
+> ⚠️ **Important:** There are two `urls.py` files in a Django project — one inside your **main project folder** (e.g., `myblog_python/`) and one inside your **app folder**. This step is for the **main project folder only**.
+
+In VS Code, navigate to:
+
+```
+<projectname>_python/
+└── <projectname>_python/
+    └── urls.py        👈 open this one
+```
+
+**Replace the entire contents** of `urls.py` with the following:
+
+```python
+from django.contrib import admin
+from django.urls import path, include
+from django.conf.urls.static import static
+from django.conf import settings
+
+urlpatterns = [
+    path('', include('<app_name>_app.urls'))
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+```
+
+> Replace `<app_name>_app` with your actual app name (e.g., `blog_app`).
+
+**What this does:**
+
+- `include('<app_name>_app.urls')` — forwards all incoming requests to your app's own URL file
+- The `if settings.DEBUG` block — serves static and media files locally during development (this is automatically handled by a web server in production)
+
+> ⚠️ **Note:** This requires a `urls.py` file inside your app folder as well. That will be covered in the next part.
+
+Your updated project structure now looks like this:
+
+```
+myblog_python/
+├── myblog_python/
+│   ├── settings.py
+│   ├── urls.py        ✅ (just updated)
+│   └── ...
+├── blog_app/
+│   └── ...
+├── static/
+└── manage.py
+```
+
+---
+
 ## ⏭️ What's Next?
 
 **Part 3** will cover:
 
+- Creating `urls.py` inside your app folder
 - Creating templates and views
-- Setting up URLs
 - Connecting your app to the database
 - Running the development server
 
